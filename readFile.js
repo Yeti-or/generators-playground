@@ -3,7 +3,7 @@
 const fs = require('fs');
 
 let filename = process.argv[2];
-readFile(filename, chain(splitLines, numberLines, printLines));
+readFile(filename, chain(splitLines, numberLines));
 
 function chain() {
     let generatorObject = arguments[arguments.length - 1]();
@@ -46,13 +46,14 @@ function* splitLines(target) {
 function* numberLines(target) {
     for (let lineN = 1; ; lineN++) {
         let line = yield;
+        //yield* printLines(lineN);
         target.next(`${lineN}: ${line}`);
     }
 }
 
-function* printLines() {
+function* printLines(lineN) {
     while (true) {
         var line = yield;
-        console.log(line);
+        console.log(`${lineN}: ${line}`);
     }
 }
